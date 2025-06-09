@@ -79,7 +79,6 @@ def add_bar():
         bar_markers.append(marker)
         listbox_bars.insert(END, name)
 
-        # Czyszczenie pól
         entry_b_name.delete(0, END)
         entry_b_loc.delete(0, END)
         entry_b_rating.delete(0, END)
@@ -240,6 +239,109 @@ btn_client_add.grid(row=5, column=0, columnspan=2)
 Button(f2_l, text='Szczegóły', command=show_client).pack()
 Button(f2_l, text='Edytuj', command=edit_client).pack()
 Button(f2_l, text='Usuń', command=lambda: remove_client()).pack()
+
+# ================== Zakładka 3: Pracownicy ===================
+tab3 = Frame(notebook)
+notebook.add(tab3, text='Pracownicy')
+workers, worker_markers = [], {}
+
+f3_l, f3_f, f3_d, f3_m = Frame(tab3), Frame(tab3), Frame(tab3), Frame(tab3)
+f3_l.grid(row=0, column=0), f3_f.grid(row=0, column=1)
+f3_d.grid(row=1, column=0, columnspan=2), f3_m.grid(row=2, column=0, columnspan=2)
+
+listbox_workers = Listbox(f3_l, width=50)
+listbox_workers.pack()
+
+Label(f3_f, text='Bar').grid(row=0, column=0)
+entry_wb = Entry(f3_f); entry_wb.grid(row=0, column=1)
+Label(f3_f, text='Miasto').grid(row=1, column=0)
+entry_wl = Entry(f3_f); entry_wl.grid(row=1, column=1)
+Label(f3_f, text='Imię').grid(row=2, column=0)
+entry_wf = Entry(f3_f); entry_wf.grid(row=2, column=1)
+Label(f3_f, text='Nazwisko').grid(row=3, column=0)
+entry_wn = Entry(f3_f); entry_wn.grid(row=3, column=1)
+
+map3 = tkintermapview.TkinterMapView(f3_m, width=1200, height=400)
+map3.pack()
+map3.set_position(52.23, 21.00)
+map3.set_zoom(6)
+
+Label(f3_d, text='Bar:').grid(row=0, column=0)
+label_wb = Label(f3_d, text='---'); label_wb.grid(row=0, column=1)
+Label(f3_d, text='Miasto:').grid(row=0, column=2)
+label_wl = Label(f3_d, text='---'); label_wl.grid(row=0, column=3)
+Label(f3_d, text='Imię:').grid(row=0, column=4)
+label_wf = Label(f3_d, text='---'); label_wf.grid(row=0, column=5)
+Label(f3_d, text='Nazwisko:').grid(row=0, column=6)
+label_wn = Label(f3_d, text='---'); label_wn.grid(row=0, column=7)
+
+def add_worker():
+    w = {
+        'bar': entry_wb.get(), 'loc': entry_wl.get(),
+        'fname': entry_wf.get(), 'lname': entry_wn.get(),
+        'coords': get_coords(entry_wl.get())
+    }
+    workers.append(w)
+    key = (w['bar'], w['loc'])
+    text = f"{w['bar']}\n" + "\n".join(f"{x['fname']} {x['lname']}" for x in workers if (x['bar'], x['loc']) == key)
+    if key in worker_markers: worker_markers[key].delete()
+    worker_markers[key] = map3.set_marker(*w['coords'], text=text)
+    listbox_workers.insert(END, f"{w['fname']} {w['lname']}")
+
+    # Czyszczenie pól
+    entry_wb.delete(0, END)
+    entry_wl.delete(0, END)
+    entry_wf.delete(0, END)
+    entry_wn.delete(0, END)
+
+def show_worker():
+    i = listbox_workers.curselection()
+    if i:
+        w = workers[i[0]]
+        label_wb.config(text=w['bar'])
+        label_wl.config(text=w['loc'])
+        label_wf.config(text=w['fname'])
+        label_wn.config(text=w['lname'])
+        map3.set_position(*w['coords'])
+        map3.set_zoom(15)
+
+def remove_worker():
+    i = listbox_workers.curselection()
+    if i:
+        w = workers.pop(i[0])
+        key = (w['bar'], w['loc'])
+        if key in worker_markers:
+            worker_markers[key].delete()
+            del worker_markers[key]
+        listbox_workers.delete(i)
+
+def edit_worker():
+    i = listbox_workers.curselection()
+    if i:
+        w = workers[i[0]]
+        entry_wb.delete(0, END); entry_wb.insert(0, w['bar'])
+        entry_wl.delete(0, END); entry_wl.insert(0, w['loc'])
+        entry_wf.delete(0, END); entry_wf.insert(0, w['fname'])
+        entry_wn.delete(0, END); entry_wn.insert(0, w['lname'])
+        def update():
+            w['bar'] = entry_wb.get()
+            w['loc'] = entry_wl.get()
+            w['fname'] = entry_wf.get()
+            w['lname'] = entry_wn.get()
+            w['coords'] = get_coords(w['loc'])
+            key = (w['bar'], w['loc'])
+            if key in worker_markers: worker_markers[key].delete()
+            text = f"{w['bar']}\n" + "\n".join(f"{x['fname']} {x['lname']}" for x in workers if (x['bar'], x['loc']) == key)
+            worker_markers[key] = map3.set_marker(*w['coords'], text=text)
+            listbox_workers.delete(i); listbox_workers.insert(i, f"{w['fname']} {w['lname']}")
+            btn_worker_add.config(text="Dodaj", command=add_worker)
+        btn_worker_add.config(text="Zapisz", command=update)
+
+btn_worker_add = Button(f3_f, text='Dodaj', command=add_worker)
+btn_worker_add.grid(row=4, column=0, columnspan=2)
+Button(f3_l, text='Szczegóły', command=show_worker).pack()
+Button(f3_l, text='Edytuj', command=edit_worker).pack()
+Button(f3_l, text='Usuń', command=lambda: remove_worker()).pack()
 
 
 root.mainloop()
