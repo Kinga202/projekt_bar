@@ -5,8 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 
 root = Tk()
-root.title("Zarządzanie Barami")
-root.geometry("1300x750")
+root.title("Zarządzanie barami")
+root.geometry("1300x700")
 notebook = ttk.Notebook(root)
 notebook.pack(fill='both', expand=True)
 
@@ -125,9 +125,15 @@ def edit_bar():
 
 btn_add = Button(frame1_f, text="Dodaj", command=add_bar)
 btn_add.grid(row=3, column=0, columnspan=2)
-Button(frame1_l, text="Szczegóły", command=show_bar).pack()
-Button(frame1_l, text="Usuń", command=remove_bar).pack()
-Button(frame1_l, text="Edytuj", command=edit_bar).pack()
+ramka_przyciski_bar = Frame(frame1_l)
+ramka_przyciski_bar.pack(pady=5)
+button_pokaz_szczegoly = Button(ramka_przyciski_bar, text='Pokaż szczegóły', command=show_bar)
+button_pokaz_szczegoly.grid(row=0, column=0, padx=5)
+button_usun_bar = Button(ramka_przyciski_bar, text='Usuń', command=remove_bar)
+button_usun_bar.grid(row=0, column=1, padx=5)
+button_edytuj_bar = Button(ramka_przyciski_bar, text='Edytuj', command=edit_bar)
+button_edytuj_bar.grid(row=0, column=2, padx=5)
+
 
 
 # ================== Zakładka 2: Klienci ===================
@@ -236,9 +242,16 @@ def edit_client():
 
 btn_client_add = Button(f2_f, text='Dodaj', command=add_client)
 btn_client_add.grid(row=5, column=0, columnspan=2)
-Button(f2_l, text='Szczegóły', command=show_client).pack()
-Button(f2_l, text='Edytuj', command=edit_client).pack()
-Button(f2_l, text='Usuń', command=lambda: remove_client()).pack()
+
+ramka_przyciski_client = Frame(f2_l)
+ramka_przyciski_client.pack(pady=5)
+button_pokaz_szczegoly = Button(ramka_przyciski_client, text='Pokaż szczegóły', command=show_client)
+button_pokaz_szczegoly.grid(row=0, column=0, padx=5)
+button_usun_client = Button(ramka_przyciski_client, text='Usuń', command=remove_client)
+button_usun_client.grid(row=0, column=1, padx=5)
+button_edytuj_client = Button(ramka_przyciski_client, text='Edytuj', command=edit_client)
+button_edytuj_client.grid(row=0, column=2, padx=5)
+
 
 # ================== Zakładka 3: Pracownicy ===================
 tab3 = Frame(notebook)
@@ -339,9 +352,15 @@ def edit_worker():
 
 btn_worker_add = Button(f3_f, text='Dodaj', command=add_worker)
 btn_worker_add.grid(row=4, column=0, columnspan=2)
-Button(f3_l, text='Szczegóły', command=show_worker).pack()
-Button(f3_l, text='Edytuj', command=edit_worker).pack()
-Button(f3_l, text='Usuń', command=lambda: remove_worker()).pack()
+ramka_przyciski_worker = Frame(f3_l)
+ramka_przyciski_worker.pack(pady=5)
+button_pokaz_szczegoly_worker = Button(ramka_przyciski_worker, text='Pokaż szczegóły', command=show_worker)
+button_pokaz_szczegoly_worker.grid(row=0, column=0, padx=5)
+button_usun_worker = Button(ramka_przyciski_worker, text='Usuń', command=remove_worker)
+button_usun_worker.grid(row=0, column=1, padx=5)
+button_edytuj_worker = Button(ramka_przyciski_worker, text='Edytuj', command=edit_worker)
+button_edytuj_worker.grid(row=0, column=2, padx=5)
+
 
 
 root.mainloop()
