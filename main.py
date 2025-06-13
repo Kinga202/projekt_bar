@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 root = Tk()
 root.title("Zarządzanie barami")
-root.geometry("1300x700")
+root.geometry("1200x700")
 notebook = ttk.Notebook(root)
 notebook.pack(fill='both', expand=True)
 
@@ -28,6 +28,9 @@ bars, bar_markers = [], []
 frame1_l, frame1_f, frame1_d, frame1_m = Frame(tab1), Frame(tab1), Frame(tab1), Frame(tab1)
 frame1_l.grid(row=0, column=0), frame1_f.grid(row=0, column=1)
 frame1_d.grid(row=1, column=0, columnspan=2), frame1_m.grid(row=2, column=0, columnspan=2)
+
+label_lista_obiektow = Label(frame1_l, text='Lista barów:')
+label_lista_obiektow.pack()
 
 listbox_bars = Listbox(frame1_l, width=50)
 listbox_bars.pack()
@@ -84,8 +87,7 @@ def add_bar():
         entry_b_rating.delete(0, END)
 
     except:
-        messagebox.showwarning("Błąd", "Nieprawidłowe dane")
-
+        messagebox.showwarning("Błąs", "Musisz podać wsyztskie dane")
 
 
 def show_bar():
@@ -123,6 +125,8 @@ def edit_bar():
             btn_add.config(text="Dodaj", command=add_bar)
         btn_add.config(text="Zapisz", command=update)
 
+
+
 btn_add = Button(frame1_f, text="Dodaj", command=add_bar)
 btn_add.grid(row=3, column=0, columnspan=2)
 ramka_przyciski_bar = Frame(frame1_l)
@@ -144,6 +148,9 @@ clients, client_markers = [], {}
 f2_l, f2_f, f2_d, f2_m = Frame(tab2), Frame(tab2), Frame(tab2), Frame(tab2)
 f2_l.grid(row=0, column=0), f2_f.grid(row=0, column=1)
 f2_d.grid(row=1, column=0, columnspan=2), f2_m.grid(row=2, column=0, columnspan=2)
+
+label_lista_obiektow = Label(f2_l, text='Lista klientów:')
+label_lista_obiektow.pack()
 
 listbox_clients = Listbox(f2_l, width=50)
 listbox_clients.pack()
@@ -261,6 +268,9 @@ workers, worker_markers = [], {}
 f3_l, f3_f, f3_d, f3_m = Frame(tab3), Frame(tab3), Frame(tab3), Frame(tab3)
 f3_l.grid(row=0, column=0), f3_f.grid(row=0, column=1)
 f3_d.grid(row=1, column=0, columnspan=2), f3_m.grid(row=2, column=0, columnspan=2)
+
+label_lista_obiektow = Label(f3_l, text='Lista pracownikow:')
+label_lista_obiektow.pack()
 
 listbox_workers = Listbox(f3_l, width=50)
 listbox_workers.pack()
